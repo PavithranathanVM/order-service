@@ -10,7 +10,6 @@ public class OrderServiceApplication {
 
 		SpringApplication.run(OrderServiceApplication.class, args);
 
-		System.out.println("Hello from Feature");
 	}
 
 }
