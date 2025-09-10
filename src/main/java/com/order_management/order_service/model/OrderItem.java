@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,13 +21,23 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private UUID purchaseOrderId;
-
     private String productCategory;
 
     private BigDecimal price;
 
     private BigDecimal quantity;
 
+    @ManyToOne
+            (
+                    cascade = CascadeType.ALL
+            )
+    @JoinColumn(name = "orderId")
+    private PurchaseOrder purchaseOrder;
+
+    @OneToMany
+            (
+                    cascade = CascadeType.ALL,
+                    mappedBy = "orderItem"
+            )
+    private List<OrderLineItem> orderLineItem;
 }

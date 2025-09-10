@@ -29,4 +29,4 @@ spring:
       expiration: 3600000             # 1 hour in ms
       issuer: order-app
 server:
-    port: '8081'
+    port: '8080'

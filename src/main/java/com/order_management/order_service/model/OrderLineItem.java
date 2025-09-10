@@ -1,16 +1,14 @@
 package com.order_management.order_service.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,8 +22,6 @@ public class OrderLineItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private UUID orderItemId;
-
     private UUID productId;
 
     private String productName;
@@ -34,5 +30,18 @@ public class OrderLineItem {
 
     private BigDecimal price;
 
+    @ManyToOne
+            (
+                    cascade = CascadeType.ALL
+            )
+    @JoinColumn(
+            name = "orderItemId"
+    )
+    private OrderItem orderItem;
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "orderLineItem"
+    )
+    private List<OrderLineItemAttr> orderLineItemAttrList;
 }
