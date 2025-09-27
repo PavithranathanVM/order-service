@@ -1,12 +1,11 @@
 package com.order_management.order_service.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class OrderItem {
 
     @Id
@@ -23,9 +23,11 @@ public class OrderItem {
 
     private String productCategory;
 
-    private BigDecimal price;
+    private BigDecimal totalPrice;
 
-    private BigDecimal quantity;
+    private String productName;
+
+    private BigDecimal totalQuantity;
 
     @ManyToOne
             (
@@ -40,4 +42,5 @@ public class OrderItem {
                     mappedBy = "orderItem"
             )
     private List<OrderLineItem> orderLineItem;
+
 }
