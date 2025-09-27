@@ -54,12 +54,13 @@ class OrderServiceTest {
 
         OrderItemDTO itemDto = new OrderItemDTO(
                 "DummyProduct",
+                "Test ProductName",
                 List.of(OrderLineItemDTO.builder().price(BigDecimal.valueOf(21))
                         .productId(UUID.randomUUID())
                         .quantity(12)
                         .attributes(List.of(OrderLineItemAttributeDTO.builder()
-                                .key("Test")
-                                .value("21").build())).build()),
+                                        .attributeKey("1")
+                                .attributeValue("21").build())).build()),
                 BigDecimal.valueOf(500),
                 BigDecimal.valueOf(2)
 
