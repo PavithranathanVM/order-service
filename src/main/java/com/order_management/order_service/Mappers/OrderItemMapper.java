@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring",uses = {OrderLineItemMapper.class})
 public interface OrderItemMapper {
 
-    @Mapping(target = "lineItem", source = "orderLineItem")
-    OrderItemDTO toDto(OrderItem orderItem);
+    @Mapping(target = "lineItems", source = "orderLineItem")
+    OrderItemResponseDTO toDto(OrderItem orderItem);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderLineItem", source = "lineItem")

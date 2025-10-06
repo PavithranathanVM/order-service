@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface PurchaseOrderService {
     PurchaseOrderResponse placeOrder(PurchaseOrderRequest request);
     PurchaseOrderResponse getOrderById(UUID orderId);
-    List<PurchaseOrderResponse> getAllOrders();
+    List<PurchaseOrderResponse> getAllOrders(UUID customerId);
     PurchaseOrderResponse updateOrderStatus(UUID orderId, String status);
     void cancelOrder(UUID orderId);
 }

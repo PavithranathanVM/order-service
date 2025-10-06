@@ -2,8 +2,6 @@ package com.order_management.order_service.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.order_management.order_service.DTOs.KafkaDTOs.OrderCreatedEvent;
-import com.order_management.order_service.DTOs.KafkaDTOs.OrderItemEvent;
 import com.order_management.order_service.DTOs.OrderItemDTO;
 import com.order_management.order_service.DTOs.PurchaseOrderRequest;
 import com.order_management.order_service.DTOs.PurchaseOrderResponse;
@@ -15,15 +13,19 @@ import com.order_management.order_service.model.OrderLineItem;
 import com.order_management.order_service.model.OrderLineItemAttr;
 import com.order_management.order_service.model.PurchaseOrder;
 import com.order_management.order_service.repo.PurchaseOrderRepo;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import com.common.kafka.common_kafka.KafkaDTOs.*;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -131,6 +133,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         try {
             savedOrder.setStatus(OrderStatus.CREATED);
             savedOrder = purchaseOrderRepository.save(savedOrder);
+
             OrderCreatedEvent event = OrderCreatedEvent.builder()
                     .orderId(savedOrder.getId())
                     .customerId(savedOrder.getCustomerId())
@@ -162,11 +165,28 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     public PurchaseOrderResponse getOrderById(UUID orderId) {
-        return null;
+        PurchaseOrderResponse response = null;
+        if(orderId != null)
+        {
+                PurchaseOrder order = purchaseOrderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("Order not found"));
+
+                response= orderMapper.toDTO(order);
+        }
+        return response;
     }
 
-    public List<PurchaseOrderResponse> getAllOrders() {
-        return List.of();
+    public List<PurchaseOrderResponse> getAllOrders(UUID customerId) {
+        List<PurchaseOrder> order = List.of();
+
+        if(customerId != null) {
+            order = purchaseOrderRepository.findByCustomerId(customerId);
+
+            if(order.isEmpty())
+            {
+                throw new EntityNotFoundException("No orders for customer " + customerId);
+            }
+        }
+        return orderMapper.toDTOList(order);
     }
 
     public PurchaseOrderResponse updateOrderStatus(UUID orderId, String status) {

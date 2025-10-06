@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @CrossOrigin
 public class OrderController {
@@ -25,5 +28,22 @@ public class OrderController {
     public ResponseEntity<PurchaseOrderResponse>placeOrder(@RequestBody PurchaseOrderRequest purchaseOrderRequest) {
        return new ResponseEntity<>(purchaseOrderService.placeOrder(purchaseOrderRequest), HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<PurchaseOrderResponse>getOrder(@RequestParam(name = "orderId") UUID orderId)
+    {
+
+        PurchaseOrderResponse response = purchaseOrderService.getOrderById(orderId);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/all-order")
+    public ResponseEntity<List<PurchaseOrderResponse>>getAllOrder(@RequestParam(name = "custId") UUID customerId)
+    {
+        List<PurchaseOrderResponse> response = purchaseOrderService.getAllOrders(customerId);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }
