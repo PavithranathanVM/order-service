@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderLineItemAttributeResponseDTO {
-
     private UUID id;
     private String key;
     private String value;

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring",  uses = {OrderAttributeMapper.class})
 public interface OrderLineItemMapper {
 
-    @Mapping(target = "id", ignore = true)
+
     @Mapping(target = "attributes", source = "orderLineItemAttrList")
     OrderLineItemResponseDTO toDto(OrderLineItem orderLineItem);
 
