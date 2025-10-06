@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/OrderDB
+    password: admin
+  application:
+    name: order-service
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:9092   # change if using Docker or cloud
+    consumer:
+      group-id: order-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      ack-mode: record   # ensures at-least-once delivery
+  security:
+    jwt:
+      secret: mysecretkey1234567890   # replace with secure secret in production
+      expiration: 3600000             # 1 hour in ms
+      issuer: order-app
+server:
+    port: '8080'
